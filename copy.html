@@ -1,9 +1,0 @@
-<a href="#" id="copyLink">點我複製文字</a>
-<script>
-document.getElementById("copyLink").addEventListener("click", function(e) {
-  e.preventDefault();
-  navigator.clipboard.writeText("要複製的文字內容")
-    .then(() => alert("已複製到剪貼簿"))
-    .catch(err => console.error("複製失敗", err));
-});
-</script>
