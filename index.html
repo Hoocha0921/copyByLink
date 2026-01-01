@@ -1,9 +1,108 @@
-<a href="#" id="copyLink">點我複製文字</a>
-<script>
-document.getElementById("copyLink").addEventListener("click", function(e) {
-  e.preventDefault();
-  navigator.clipboard.writeText("要複製的文字內容")
-    .then(() => alert("已複製到剪貼簿"))
-    .catch(err => console.error("複製失敗", err));
-});
-</script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>快速複製文字</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #ffffff;
+      width: 90%;
+      max-width: 420px;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      text-align: center;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 6px;
+      text-align: left;
+    }
+
+    .content {
+      font-size: 16px;
+      background: #f1f3f5;
+      padding: 14px;
+      border-radius: 10px;
+      word-break: break-all;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 600;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hint {
+      font-size: 14px;
+      color: #16a34a;
+      margin-top: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="label">將被複製的內容</div>
+    <div class="content" id="text">
+      這是一段會被複製的文字內容
+    </div>
+
+    <button id="copyBtn">📋 點我複製</button>
+    <div class="hint" id="hint">✅ 已複製，正在關閉頁面…</div>
+  </div>
+
+  <script>
+    // ⭐⭐⭐ 這個就是「被複製的文字變數」
+    const copiedText = document.getElementById("text").innerText;
+
+    const btn = document.getElementById("copyBtn");
+    const hint = document.getElementById("hint");
+
+    btn.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(copiedText);
+
+        hint.style.display = "block";
+
+        // 給使用者 0.8 秒看到提示，再嘗試關閉
+        setTimeout(() => {
+          window.close();
+
+          // 如果瀏覽器不允許關閉，提示使用者
+          setTimeout(() => {
+            hint.innerText = "⚠️ 若未自動關閉，請手動返回";
+          }, 300);
+        }, 800);
+
+      } catch (e) {
+        alert("複製失敗，請手動複製");
+      }
+    };
+  </script>
+
+</body>
+</html>
